@@ -41,4 +41,16 @@ public class Forme{
    int getIndex(){
       return index; 
    }
+
+ String getLabel(){
+     return label; 
+  }
+  
+  ArrayList getCouleur(){
+    ArrayList<Integer> couleur = new ArrayList<Integer> ();
+    couleur.add(r);
+    couleur.add(g);
+    couleur.add(b);
+    return couleur;
+  }
 }
