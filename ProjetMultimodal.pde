@@ -79,8 +79,32 @@ ArrayList<Forme> getForme(){
   return formes;
 }
 
+ArrayList<Button> getButton(int type){
+  if (type == 0){
+    return buttonForme;
+  }
+  return buttonCouleur;
+}
+
 void draw_shape(int x, int y, int r, int g, int b, int index,String label){
   Forme forme = new Forme(x, y, r, g, b, index, label);
   formes.add(forme);
   forme.display();
+}
+
+void delete_shape(int index){
+  formes.remove(index);
+}
+
+void modify_color(int r, int g, int b, int index){
+  Forme forme_tmp = formes.get(index);
+  forme_tmp.setR(r);
+  forme_tmp.setG(g);
+  forme_tmp.setB(b);  
+}
+
+void replace_shape(int x, int y,int index){
+  Forme forme_tmp = formes.get(index);
+  forme_tmp.setX(x);
+  forme_tmp.setY(y); 
 }
