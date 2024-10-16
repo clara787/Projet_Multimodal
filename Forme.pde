@@ -22,13 +22,16 @@ public class Forme{
    //à changer aussi pour que ça fit avec toutes les formes
    void display(){
      fill(r,g,b);  
-    if (label == "Rectangle" || label == "Carré") {
+    if (label.equals("Rectangle")) {
+      rect(x, y, w, 200);
+    }
+    else if (label.equals("Carré")){
       rect(x, y, w, h);
     }
-    else if (label == "Cercle"){
+    else if (label.equals("Cercle")){
       ellipse(x, y, w, h);
     }
-    else if (label == "Triangle") {
+    else if (label.equals("Triangle")) {
       triangle(x+w/2, y, x+w, y+h, x, y+h);
     }
    }
