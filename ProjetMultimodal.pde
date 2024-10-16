@@ -6,7 +6,7 @@ IvyClick ivyClick;
 MoteurMultiModal multi;
 ArrayList<Button> buttonForme;
 ArrayList<Button> buttonCouleur;
-ArrayList<Forme> forme;
+ArrayList<Forme> formes;
 
 void setup(){
   ivyClick = new IvyClick();
@@ -14,7 +14,7 @@ void setup(){
   
   buttonForme = new ArrayList<>();
   buttonCouleur = new ArrayList<>();
-  forme = new ArrayList<>();
+  formes = new ArrayList<>();
   
   buttonForme.add(new Button(0,0,100,50,"Rectangle"));
   buttonForme.add(new Button(100,0,100,50,"Triangle"));
@@ -25,8 +25,8 @@ void setup(){
   buttonCouleur.add(new Button(600,0,100,50,"Bleu"));
   buttonCouleur.add(new Button(700,0,100,50,"Vert"));
   
-  forme.add(new Forme(500,300,0,200,0,0));
-  
+  //formes.add(new Forme(500,300,0,200,0,0,""));
+  draw_shape(500,300,0,0,200,0,"Carré");
   size(800,600);
 }
 
@@ -41,7 +41,7 @@ void draw(){
      b.display(); 
   }
   
-  for(Forme f : forme){
+  for(Forme f : formes){
      f.display(); 
   }
 }
@@ -61,7 +61,7 @@ void mousePressed(){
      }
   }
   
-  for(Forme f : forme){
+  for(Forme f : formes){
      if(f.isMouseOver(mouseX,mouseY)){
         ivyClick.appuiForme(f);
         return;
@@ -76,5 +76,11 @@ void mouseMoved(){
 }
 
 ArrayList<Forme> getForme(){
-  return forme;
+  return formes;
+}
+
+void draw_shape(int x, int y, int r, int g, int b, int index,String label){
+  Forme forme = new Forme(x, y, r, g, b, index, label);
+  formes.add(forme);
+  forme.display();
 }
