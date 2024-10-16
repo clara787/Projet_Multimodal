@@ -16,14 +16,14 @@ void setup(){
   buttonCouleur = new ArrayList<>();
   formes = new ArrayList<>();
   
-  buttonForme.add(new Button(0,0,100,50,"Rectangle"));
-  buttonForme.add(new Button(100,0,100,50,"Triangle"));
-  buttonForme.add(new Button(200,0,100,50,"Cercle"));
-  buttonForme.add(new Button(300,0,100,50,"Carré"));
+  buttonForme.add(new Button(0,0,100,50,0,"Rectangle"));
+  buttonForme.add(new Button(100,0,100,50,0,"Triangle"));
+  buttonForme.add(new Button(200,0,100,50,0,"Cercle"));
+  buttonForme.add(new Button(300,0,100,50,0,"Carré"));
   
-  buttonCouleur.add(new Button(500,0,100,50,"Rouge"));
-  buttonCouleur.add(new Button(600,0,100,50,"Bleu"));
-  buttonCouleur.add(new Button(700,0,100,50,"Vert"));
+  buttonCouleur.add(new Button(500,0,100,50,1,"Rouge"));
+  buttonCouleur.add(new Button(600,0,100,50,1,"Bleu"));
+  buttonCouleur.add(new Button(700,0,100,50,1,"Vert"));
   
   //formes.add(new Forme(500,300,0,200,0,0,""));
   draw_shape(500,300,0,0,200,0,"Carré");
