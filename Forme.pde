@@ -42,7 +42,7 @@ public class Forme{
       return index; 
    }
 
- String getLabel(){
+  String getLabel(){
      return label; 
   }
   
@@ -52,5 +52,37 @@ public class Forme{
     couleur.add(g);
     couleur.add(b);
     return couleur;
+  }
+  
+  int getR(){
+    return r;
+  }
+  
+  int getG(){
+    return g;
+  }
+  
+  int getB(){
+    return b;
+  }
+  
+  void setR(int new_r){
+    this.r = new_r;
+  }
+  
+  void setG(int new_g){
+    this.g = new_g;
+  }
+  
+  void setB(int new_b){
+    this.b = new_b;
+  }
+  
+  void setX(int new_x){
+    this.x = new_x;
+  }
+  
+  void setY(int new_y){
+    this.y = new_y;
   }
 }
