@@ -34,6 +34,8 @@
 			<item> déplacer  <tag> out = "MOVE" </tag></item>
 			<item> bouger  <tag> out = "MOVE" </tag></item>
 
+			<item> modifier <tag> out= "CHANGE" </tag></item>
+
 			<item> quitter <tag> out = "QUIT" </tag></item>
 			<item> sortir <tag> out = "QUIT" </tag></item>
 			<item> arrêter <tag> out = "QUIT" </tag></item>

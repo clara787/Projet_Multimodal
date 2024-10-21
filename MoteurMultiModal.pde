@@ -74,30 +74,14 @@ class MoteurMultiModal{
     }
     
     if(parsed.contains("modifier")){
-        if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carré")){
-          if(parsed.contains("rouge")||parsed.contains("vert")||parsed.contains("bleu")){
-              ArrayList<Forme> formes = getForme();
-              for(int i = 0; i<formes.size(); i++){
-                  if(formes.get(i).getLabel().equals(lastForme)){
-                      if(formes.get(i).getCouleur().equals(lastColor)){
-                         //modifier_shape(i); 
-                         return;
-                      }
-                  }
-              }
-          }else{
-              ArrayList<Forme> formes = getForme();
-              for(int i = 0; i<formes.size(); i++){
-                  if(formes.get(i).getLabel().equals(lastForme)){
-                         //modifer_shape(i); 
-                         return;
-                      }
-              }
-          }
-        }else{
-          //modifier_shape(selectedForme.getIndex());
-          return;
-        }
+        int index = 0;
+        
+        ArrayList<Forme> formes = getForme();
+        for(int i = 0; i<formes.size(); i++){
+            if(formes.get(i).getLabel().equals(lastForme)) index = i;
+        }  
+        
+        modify_color(lastColor.get(0), lastColor.get(1), lastColor.get(2),index);
     }else if(parsed.contains("supprimer")){
         if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carré")){
           if(parsed.contains("rouge")||parsed.contains("vert")||parsed.contains("bleu")){
@@ -105,7 +89,7 @@ class MoteurMultiModal{
               for(int i = 0; i<formes.size(); i++){
                   if(formes.get(i).getLabel().equals(lastForme)){
                       if(formes.get(i).getCouleur().equals(lastColor)){
-                         //delete_shape(i); 
+                         delete_shape(i); 
                          return;
                       }
                   }
@@ -114,13 +98,13 @@ class MoteurMultiModal{
               ArrayList<Forme> formes = getForme();
               for(int i = 0; i<formes.size(); i++){
                   if(formes.get(i).getLabel().equals(lastForme)){
-                         //delete_shape(i); 
+                         delete_shape(i); 
                          return;
                       }
               }
           }
         }else{
-          //delete_shape(selectedForme.getIndex());
+          delete_shape(selectedForme.getIndex());
           return;
         }
     }else if(parsed.contains("déplacer")){

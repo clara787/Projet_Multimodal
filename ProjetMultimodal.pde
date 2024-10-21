@@ -93,7 +93,12 @@ void draw_shape(int x, int y, int r, int g, int b, int index,String label){
 }
 
 void delete_shape(int index){
-  formes.remove(index);
+  println(index);
+  for(int i = 0; i < formes.size(); i++){
+     if(formes.get(i).getIndex() == index){
+        formes.remove(formes.get(i)); 
+     }
+  }
 }
 
 void modify_color(int r, int g, int b, int index){
