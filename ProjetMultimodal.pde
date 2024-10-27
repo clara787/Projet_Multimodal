@@ -27,7 +27,7 @@ void setup(){
   
   //formes.add(new Forme(500,300,0,200,0,0,""));
   draw_shape(500,300,0,0,200,0,"Carré");
-  size(800,600);
+  size(1600,1200);
 }
 
 void draw(){
@@ -93,10 +93,9 @@ void draw_shape(int x, int y, int r, int g, int b, int index,String label){
 }
 
 void delete_shape(int index){
-  println(index);
   for(int i = 0; i < formes.size(); i++){
      if(formes.get(i).getIndex() == index){
-        formes.remove(formes.get(i)); 
+        formes.remove(i); 
      }
   }
 }

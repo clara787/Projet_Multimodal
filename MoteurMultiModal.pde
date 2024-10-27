@@ -24,10 +24,10 @@ class MoteurMultiModal{
        bus = new Ivy("ListenMultiModalMotor","",null);
        bus.start("127.255.255.255:2010");
        
-       bus.bindMsg("^sra5 Text=(.*) Confidence=(.*)",new IvyMessageListener(){
+       bus.bindMsg("^PyVocal msg=(.*)",new IvyMessageListener(){
          public void receive(IvyClient client, String[] args){
-           String temp = args[1].replace(',', '.');
-           if(float(temp)>0.30)messageReceiveOral(args[0]);
+           print(args[0]);
+           messageReceiveOral(args[0]);
          }
        });
        
@@ -48,7 +48,6 @@ class MoteurMultiModal{
   }
   
   void messageReceiveOral(String message){
-    println(message);
     ArrayList<String> parsed = new ArrayList<>(Arrays.asList(message.split(" ")));
     
     if(parsed.contains("vert")){
@@ -73,23 +72,22 @@ class MoteurMultiModal{
         lastForme = "Triangle";
     }
     
-    if(parsed.contains("modifier")){
+    if(parsed.contains("modifie")){
         int index = 0;
         
         ArrayList<Forme> formes = getForme();
         for(int i = 0; i<formes.size(); i++){
             if(formes.get(i).getLabel().equals(lastForme)) index = i;
         }  
-        
         modify_color(lastColor.get(0), lastColor.get(1), lastColor.get(2),index);
-    }else if(parsed.contains("supprimer")){
+    }else if(parsed.contains("supprime")){
         if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carré")){
           if(parsed.contains("rouge")||parsed.contains("vert")||parsed.contains("bleu")){
               ArrayList<Forme> formes = getForme();
               for(int i = 0; i<formes.size(); i++){
                   if(formes.get(i).getLabel().equals(lastForme)){
-                      if(formes.get(i).getCouleur().equals(lastColor)){
-                         delete_shape(i); 
+                     if(formes.get(i).getCouleur().get(0).equals(lastColor.get(0)) && formes.get(i).getCouleur().get(1).equals(lastColor.get(1)) && formes.get(i).getCouleur().get(2).equals(lastColor.get(2))){
+                         delete_shape(formes.get(i).getIndex()); 
                          return;
                       }
                   }
@@ -98,7 +96,7 @@ class MoteurMultiModal{
               ArrayList<Forme> formes = getForme();
               for(int i = 0; i<formes.size(); i++){
                   if(formes.get(i).getLabel().equals(lastForme)){
-                         delete_shape(i); 
+                         delete_shape(formes.get(i).getIndex()); 
                          return;
                       }
               }
@@ -107,7 +105,7 @@ class MoteurMultiModal{
           delete_shape(selectedForme.getIndex());
           return;
         }
-    }else if(parsed.contains("déplacer")){
+    }else if(parsed.contains("déplace")){
         if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carré")){
           if(parsed.contains("rouge")||parsed.contains("vert")||parsed.contains("bleu")){
               ArrayList<Forme> formes = getForme();
@@ -135,7 +133,7 @@ class MoteurMultiModal{
         return;
     }
     
-    if(parsed.contains("dessiner")||parsed.contains("créer")){
+    if(parsed.contains("dessiner")||parsed.contains("créer")||parsed.contains("crÃ©er")){
         draw_shape(cursorX,cursorY,lastColor.get(0),lastColor.get(1),lastColor.get(2),getForme().size(),lastForme);
     }
   }
