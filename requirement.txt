@@ -1,0 +1,3 @@
+SpeechRecognition
+ivy-python
+PyAudio

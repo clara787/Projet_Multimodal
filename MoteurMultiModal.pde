@@ -50,7 +50,7 @@ class MoteurMultiModal{
   void messageReceiveOral(String message){
     ArrayList<String> parsed = new ArrayList<>(Arrays.asList(message.split(" ")));
     
-    if(parsed.contains("vert")){
+    if(parsed.contains("vert") || parsed.contains("verte")){
         lastColor.set(0,0);
         lastColor.set(1,255);
         lastColor.set(2,0);
@@ -70,19 +70,27 @@ class MoteurMultiModal{
         lastForme = "Cercle";
     }else if(parsed.contains("triangle")){
         lastForme = "Triangle";
+    }else if(parsed.contains("carrÃ©")){
+        lastForme = "Carré";
     }
     
-    if(parsed.contains("modifie")){
-        int index = 0;
-        
-        ArrayList<Forme> formes = getForme();
-        for(int i = 0; i<formes.size(); i++){
-            if(formes.get(i).getLabel().equals(lastForme)) index = i;
-        }  
-        modify_color(lastColor.get(0), lastColor.get(1), lastColor.get(2),index);
-    }else if(parsed.contains("supprime")){
-        if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carré")){
-          if(parsed.contains("rouge")||parsed.contains("vert")||parsed.contains("bleu")){
+    if(parsed.contains("modifie") || parsed.contains("modifier")){
+        if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carrÃ©")){
+          
+              ArrayList<Forme> formes = getForme();
+              for(int i = 0; i<formes.size(); i++){
+                  if(formes.get(i).getLabel().equals(lastForme)){
+                     modify_color(lastColor.get(0), lastColor.get(1), lastColor.get(2), formes.get(i).getIndex()); 
+                     return;
+                  }
+              }
+        }else{
+          modify_color(lastColor.get(0), lastColor.get(1), lastColor.get(2), selectedForme.getIndex()); 
+          return;
+        }
+    }else if(parsed.contains("supprime") || parsed.contains("supprimer")){
+        if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carrÃ©")){
+          if(parsed.contains("rouge")||parsed.contains("vert")|| parsed.contains("verte") ||parsed.contains("bleu")){
               ArrayList<Forme> formes = getForme();
               for(int i = 0; i<formes.size(); i++){
                   if(formes.get(i).getLabel().equals(lastForme)){
@@ -105,14 +113,14 @@ class MoteurMultiModal{
           delete_shape(selectedForme.getIndex());
           return;
         }
-    }else if(parsed.contains("déplace")){
-        if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carré")){
-          if(parsed.contains("rouge")||parsed.contains("vert")||parsed.contains("bleu")){
+    }else if(parsed.contains("déplace")||parsed.contains("dÃ©place")||parsed.contains("dÃ©placer")){
+        if(parsed.contains("rectangle")||parsed.contains("cercle")||parsed.contains("triangle")||parsed.contains("carrÃ©")){
+          if(parsed.contains("rouge")||parsed.contains("vert")||parsed.contains("verte") || parsed.contains("bleu")){
               ArrayList<Forme> formes = getForme();
               for(int i = 0; i<formes.size(); i++){
                   if(formes.get(i).getLabel().equals(lastForme)){
                       if(formes.get(i).getCouleur().equals(lastColor)){
-                         //move_shape(i); 
+                         move_shape(cursorX, cursorY, formes.get(i).getIndex()); 
                          return;
                       }
                   }
@@ -121,19 +129,19 @@ class MoteurMultiModal{
               ArrayList<Forme> formes = getForme();
               for(int i = 0; i<formes.size(); i++){
                   if(formes.get(i).getLabel().equals(lastForme)){
-                         //move_shape(i); 
+                         move_shape(cursorX, cursorY, formes.get(i).getIndex()); 
                          return;
                       }
               }
           }
         }else{
-          //move_shape(selectedForme.getIndex());
+          move_shape(cursorX, cursorY, selectedForme.getIndex());
           return;
         }
         return;
     }
     
-    if(parsed.contains("dessiner")||parsed.contains("créer")||parsed.contains("crÃ©er")){
+    if(parsed.contains("dessiner")||parsed.contains("créer")||parsed.contains("crÃ©er") || parsed.contains("dessine")||parsed.contains("crÃ©e")){
         draw_shape(cursorX,cursorY,lastColor.get(0),lastColor.get(1),lastColor.get(2),getForme().size(),lastForme);
     }
   }

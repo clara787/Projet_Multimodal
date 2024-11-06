@@ -1,5 +1,5 @@
 #!/usr/bin/env/python
-
+import sys
 import speech_recognition as sr
 from ivy.ivy import IvyServer
 
@@ -34,7 +34,7 @@ class Agent(IvyServer):
                     print("Parle un jour non")
                 except KeyboardInterrupt:
                     print("\nFin de la transcription en temps réel.")
-                    break
+                    sys.exit(0)
 
 if __name__ == "__main__":
     a = Agent("PyVocal")

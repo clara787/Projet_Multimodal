@@ -26,7 +26,6 @@ void setup(){
   buttonCouleur.add(new Button(700,0,100,50,1,"Vert"));
   
   //formes.add(new Forme(500,300,0,200,0,0,""));
-  draw_shape(500,300,0,0,200,0,"Carré");
   size(1600,1200);
 }
 
@@ -101,14 +100,22 @@ void delete_shape(int index){
 }
 
 void modify_color(int r, int g, int b, int index){
-  Forme forme_tmp = formes.get(index);
-  forme_tmp.setR(r);
-  forme_tmp.setG(g);
-  forme_tmp.setB(b);  
+  for(int i = 0; i < formes.size(); i++){
+     if(formes.get(i).getIndex() == index){
+        Forme forme_tmp = formes.get(index);
+        forme_tmp.setR(r);
+        forme_tmp.setG(g);
+        forme_tmp.setB(b);  
+     }
+  }
 }
 
-void replace_shape(int x, int y,int index){
-  Forme forme_tmp = formes.get(index);
-  forme_tmp.setX(x);
-  forme_tmp.setY(y); 
+void move_shape(int x, int y,int index){
+  for(int i = 0; i < formes.size(); i++){
+     if(formes.get(i).getIndex() == index){
+        Forme forme_tmp = formes.get(index);
+        forme_tmp.setX(x);
+        forme_tmp.setY(y); 
+     }
+  }
 }
