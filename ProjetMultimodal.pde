@@ -46,28 +46,37 @@ void draw(){
 }
 
 void mousePressed(){
-  for(Button b : buttonForme){
-     if(b.isMouseOver(mouseX,mouseY)){
-       ivyClick.appuiButtonForme(b);
-       return;
+  if (mouseButton == LEFT) {
+    for(Button b : buttonForme){
+       if(b.isMouseOver(mouseX,mouseY)){
+         ivyClick.appuiButtonForme(b);
+         return;
+       }
+    }
+  
+    for(Button b : buttonCouleur){
+       if(b.isMouseOver(mouseX,mouseY)){
+         ivyClick.appuiButtonCouleur(b);
+         return;
+       }  
+    }
+  
+    for(Forme f : formes){
+       if(f.isMouseOver(mouseX,mouseY)){
+          ivyClick.appuiForme(f);
+          return;
+       }
+    }
+  
+    ivyClick.traitementSouris(mouseX,mouseY); 
+  }else{
+     for(Forme f: formes){
+        if(f.isMouseOver(mouseX,mouseY)){
+          ivyClick.deleteForm(f);
+          return;
+        }
      }
   }
-  
-  for(Button b : buttonCouleur){
-     if(b.isMouseOver(mouseX,mouseY)){
-       ivyClick.appuiButtonCouleur(b);
-       return;
-     }
-  }
-  
-  for(Forme f : formes){
-     if(f.isMouseOver(mouseX,mouseY)){
-        ivyClick.appuiForme(f);
-        return;
-     }
-  }
-  
-  ivyClick.traitementSouris(mouseX,mouseY); 
 }
 
 void mouseMoved(){

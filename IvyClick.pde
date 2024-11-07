@@ -49,4 +49,11 @@ public class IvyClick{
     }
     catch(IvyException ie){}
   }
+  
+  void deleteForm(Forme f){
+     try{
+       bus.sendMsg("IvyClick Action=DeleteForme,"+f.getIndex());
+     }
+     catch(IvyException ie){}
+  }
 }

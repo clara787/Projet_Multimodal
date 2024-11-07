@@ -181,6 +181,8 @@ class MoteurMultiModal{
         }
      }else if(action.equals("BouttonForme")){
         lastForme = list[1];
+     }else if(action.equals("DeleteForme")){
+       delete_shape(int(list[1])); 
      }else{
         draw_shape(cursorX,cursorY,lastColor.get(0),lastColor.get(1),lastColor.get(2),getForme().size(),lastForme);
      }
