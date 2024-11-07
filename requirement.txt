@@ -1,3 +1,6 @@
 SpeechRecognition
 ivy-python
 PyAudio
+opencv-python
+mediapipe
+numpy

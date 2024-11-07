@@ -44,6 +44,12 @@ class MoteurMultiModal{
          }
        });
        
+       bus.bindMsg("^PyMove msg=(.*)", new IvyMessageListener(){
+         public void receive(IvyClient client, String[] args){  
+           messageReceiveGeste(args[0]);
+         }
+       });
+       
     }catch(IvyException e){}
   }
   
@@ -181,6 +187,7 @@ class MoteurMultiModal{
   }
   
   void messageReceiveGeste(String message){
+    if(message=="CarrÃ©")message = "Carré";
     message = message.replaceFirst(".",(message.charAt(0)+"").toUpperCase());
     lastForme = message;
   }
