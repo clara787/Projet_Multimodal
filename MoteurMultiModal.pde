@@ -205,8 +205,6 @@ class MoteurMultiModal{
          }
       }
     }else if(action.equals("take")){
-      println(int(list[2]),int(list[1]));
-      draw_shape(int(list[2]),int(list[1]),0,0,255,getForme().size(),"Rectangle");
       if(takeForme == null)return;
       move_shape(int(list[1]),int(list[2]),takeForme.getIndex());
       return;
