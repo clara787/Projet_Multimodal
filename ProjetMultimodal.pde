@@ -7,6 +7,8 @@ MoteurMultiModal multi;
 ArrayList<Button> buttonForme;
 ArrayList<Button> buttonCouleur;
 ArrayList<Forme> formes;
+Button buttonClear;
+
 
 void setup(){
   ivyClick = new IvyClick();
@@ -14,6 +16,7 @@ void setup(){
   
   buttonForme = new ArrayList<>();
   buttonCouleur = new ArrayList<>();
+  buttonClear = new Button(1500,0,100,50,0,"Clear");
   formes = new ArrayList<>();
   
   buttonForme.add(new Button(0,0,100,50,0,"Rectangle"));
@@ -24,8 +27,9 @@ void setup(){
   buttonCouleur.add(new Button(500,0,100,50,1,"Rouge"));
   buttonCouleur.add(new Button(600,0,100,50,1,"Bleu"));
   buttonCouleur.add(new Button(700,0,100,50,1,"Vert"));
+   
+  lancement_python(); 
   
-  //formes.add(new Forme(500,300,0,200,0,0,""));
   size(1600,1200);
 }
 
@@ -43,6 +47,8 @@ void draw(){
   for(Forme f : formes){
      f.display(); 
   }
+  
+  buttonClear.display();
 }
 
 void mousePressed(){
@@ -66,6 +72,15 @@ void mousePressed(){
           ivyClick.appuiForme(f);
           return;
        }
+    }
+    
+    if(buttonClear.isMouseOver(mouseX,mouseY)){
+      ivyClick.deleteAll();
+      buttonClear.reinit(); //ne pas afficher en selectionné
+      for(Button b : buttonCouleur){ //remise par defauts des boutons couleurs
+         b.reinit();
+    }
+      return;
     }
   
     ivyClick.traitementSouris(mouseX,mouseY); 
@@ -106,6 +121,10 @@ void delete_shape(int index){
         formes.remove(i); 
      }
   }
+}
+
+void delete_all(){
+  formes.removeAll(formes);
 }
 
 void modify_color(int r, int g, int b, int index){

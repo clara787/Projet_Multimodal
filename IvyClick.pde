@@ -56,4 +56,11 @@ public class IvyClick{
      }
      catch(IvyException ie){}
   }
+  
+  void deleteAll(){
+    try{
+       bus.sendMsg("IvyClick Action=DeleteAll");
+     }
+     catch(IvyException ie){}
+  }
 }
