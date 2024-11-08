@@ -28,9 +28,9 @@ void setup(){
   buttonCouleur.add(new Button(600,0,100,50,1,"Bleu"));
   buttonCouleur.add(new Button(700,0,100,50,1,"Vert"));
    
-  lancement_python(); 
+  //lancement_python(); 
   
-  size(1600,1200);
+  size(1600,1000);
 }
 
 void draw(){

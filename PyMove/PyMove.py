@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from ivy.ivy import IvyServer 
+import math
 
 class IvyAgent(IvyServer):
     def __init__(self,name):
@@ -31,14 +32,17 @@ def detect_shape(contour):
         else:
             return "Rectangle"
     else:
-        (x,y),radius = cv2.minEnclosingCircle(contour)
-        area = cv2.contourArea(contour)
-        circularity = 4 * np.pi * area / (cv2.arcLength(contour,True)**2)
-        if circularity > 0.8:
-            return "Cercle"
-        else:
+        try:
+            (x,y),radius = cv2.minEnclosingCircle(contour)
+            area = cv2.contourArea(contour)
+            circularity = 4 * np.pi * area / (cv2.arcLength(contour,True)**2)
+            if circularity > 0.8:
+                return "Cercle"
+            else:
+                return ""
+        except:
             return ""
-        
+
 cam = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
@@ -50,6 +54,8 @@ mp_drawing = mp.solutions.drawing_utils
 list_draw = []
 
 agent = IvyAgent("PyMove")
+
+old_gesture = ""
 
 while True:
     ret, frame = cam.read()
@@ -70,6 +76,7 @@ while True:
             major_finger_y = hand_landmarks.landmark[mp_hands.HandLandmark.MIDDLE_FINGER_TIP].y
             ring_finger_y = hand_landmarks.landmark[mp_hands.HandLandmark.RING_FINGER_TIP].y
             thumb_y = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP].y
+            thumb_x = hand_landmarks.landmark[mp_hands.HandLandmark.THUMB_TIP].x
 
             if index_finger_y < thumb_y-0.05 and major_finger_y < thumb_y-0.05 and ring_finger_y < thumb_y-0.04: 
                 hand_gesture = "send"
@@ -77,6 +84,8 @@ while True:
                 hand_gesture = "erase"
             elif index_finger_y < thumb_y-0.05:
                 hand_gesture = "up"
+            elif math.dist((index_finger_x,index_finger_y),(thumb_x,thumb_y)) < 0.1:
+                hand_gesture = "take"
             else:
                 hand_gesture = "stop"
 
@@ -89,10 +98,22 @@ while True:
                 print(r)
                 if r != "":
                     agent.send(r)
+            if hand_gesture=="take" and old_gesture!="take":
+                agent.send("newtake,"+str(index_finger_x*1600)+","+str(index_finger_y*1000))
+                print("new_take")
+            elif hand_gesture=="take":
+                print("take")
+                agent.send("take,"+str(index_finger_x*1600)+","+str(index_finger_y*1000))
+            elif old_gesture=="take":
+                agent.send("release")
+                print("release")
+
 
             for point in list_draw:
                 cv2.circle(frame, (int(point[0]), int(point[1])), 10, (255, 0, 0), -1)
                 #frame[int(point[1]),int(point[0])] = (255,0,0)
+
+            old_gesture = hand_gesture
 
     cv2.imshow("PyGesture",frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):

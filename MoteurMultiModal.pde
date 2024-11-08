@@ -7,6 +7,7 @@ class MoteurMultiModal{
   ArrayList<Integer> lastColor;
   String lastForme;
   Forme selectedForme;
+  Forme takeForme;
   Ivy bus;
   
   MoteurMultiModal(){
@@ -191,7 +192,29 @@ class MoteurMultiModal{
   }
   
   void messageReceiveGeste(String message){
-    if(message=="CarrÃ©")message = "Carré";
+    String[] list = message.split(",");
+    String action = list[0];
+    print(action);
+    if(action.equals("newtake")){
+      for(Forme f : formes){
+         if(f.isMouseOver(int(list[1]),int(list[2]))){
+            takeForme = f;
+            print(f.getIndex());
+            move_shape(int(list[1]),int(list[2]),takeForme.getIndex());
+            return;
+         }
+      }
+    }else if(action.equals("take")){
+      println(int(list[2]),int(list[1]));
+      draw_shape(int(list[2]),int(list[1]),0,0,255,getForme().size(),"Rectangle");
+      if(takeForme == null)return;
+      move_shape(int(list[1]),int(list[2]),takeForme.getIndex());
+      return;
+    }else if(action.equals("release")){
+       takeForme = null;
+       return;
+    }
+    if(message.equals("CarrÃ©"))message = "Carré";
     message = message.replaceFirst(".",(message.charAt(0)+"").toUpperCase());
     lastForme = message;
   }
