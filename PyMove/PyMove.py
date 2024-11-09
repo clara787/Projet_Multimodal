@@ -17,10 +17,10 @@ def detect_shape(contour):
     if contour == []:
         return ""
     contour = np.array(contour, dtype=np.float32)
-    contour = contour.reshape((-1, 2)) 
+    contour = contour.reshape((-1, 2))
     epsilon = 0.04 * cv2.arcLength(contour,True)
     approx = cv2.approxPolyDP(contour,epsilon,True)
-
+    
     if len(approx)==3:
         return "Triangle"
     elif len(approx)==4:
@@ -36,7 +36,7 @@ def detect_shape(contour):
             (x,y),radius = cv2.minEnclosingCircle(contour)
             area = cv2.contourArea(contour)
             circularity = 4 * np.pi * area / (cv2.arcLength(contour,True)**2)
-            if circularity > 0.8:
+            if circularity > 0.5:
                 return "Cercle"
             else:
                 return ""
@@ -47,7 +47,7 @@ cam = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False,max_num_hands=1,
-                       min_detection_confidence=0.5, min_tracking_confidence=0.5)
+                       min_detection_confidence=0.7, min_tracking_confidence=0.7)
 
 mp_drawing = mp.solutions.drawing_utils
 
@@ -57,11 +57,12 @@ agent = IvyAgent("PyMove")
 
 old_gesture = ""
 
-while True:
+while cam.isOpened():
     ret, frame = cam.read()
     if not ret:
         break
 
+    frame = cv2.flip(frame, 1) #miroir
     image_height, image_width, _ = frame.shape
     image_rgb = cv2.cvtColor(frame,cv2.COLOR_BGR2RGB)
 
@@ -92,7 +93,7 @@ while True:
             if hand_gesture == "erase":
                 list_draw = []
             if hand_gesture == "up":
-                list_draw.append((index_finger_x*image_width,index_finger_y*image_height))
+                list_draw.append((index_finger_x*image_width, index_finger_y*image_height))
             if hand_gesture == "send":
                 r = detect_shape(list_draw)
                 print(r)
@@ -108,16 +109,16 @@ while True:
                 agent.send("release")
                 print("release")
 
-
             for point in list_draw:
                 cv2.circle(frame, (int(point[0]), int(point[1])), 10, (255, 0, 0), -1)
-                #frame[int(point[1]),int(point[0])] = (255,0,0)
 
             old_gesture = hand_gesture
 
     cv2.imshow("PyGesture",frame)
-    if cv2.waitKey(1) & 0xFF == ord("q"):
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
 cam.release()
 cv2.destroyAllWindows()
+
