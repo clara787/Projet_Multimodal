@@ -207,6 +207,9 @@ class MoteurMultiModal{
     }else if(action.equals("take")){
       if(takeForme == null)return;
       move_shape(int(list[1]),int(list[2]),takeForme.getIndex());
+      if(takeForme.x >= 1440 && takeForme.y >= 55){
+         delete_shape(takeForme.getIndex());
+       }
       return;
     }else if(action.equals("release")){
        takeForme = null;

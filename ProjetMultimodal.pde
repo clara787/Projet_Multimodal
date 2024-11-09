@@ -29,7 +29,7 @@ void setup(){
   buttonCouleur.add(new Button(600,0,100,50,1,"Bleu"));
   buttonCouleur.add(new Button(700,0,100,50,1,"Vert"));
    
-  //lancement_python(); 
+  lancement_python(); 
   
   try {
     bus = new Ivy("OneDollarIvy", " OneDollarIvy is ready", null);
@@ -126,6 +126,7 @@ void mouseMoved(){
 }
 
 ArrayList<Forme> getForme(){
+  print(formes.size());
   return formes;
 }
 
@@ -157,7 +158,7 @@ void delete_all(){
 void modify_color(int r, int g, int b, int index){
   for(int i = 0; i < formes.size(); i++){
      if(formes.get(i).getIndex() == index){
-        Forme forme_tmp = formes.get(index);
+        Forme forme_tmp = formes.get(i);
         forme_tmp.setR(r);
         forme_tmp.setG(g);
         forme_tmp.setB(b);  
@@ -168,7 +169,7 @@ void modify_color(int r, int g, int b, int index){
 void move_shape(int x, int y,int index){
   for(int i = 0; i < formes.size(); i++){
      if(formes.get(i).getIndex() == index){
-        Forme forme_tmp = formes.get(index);
+        Forme forme_tmp = formes.get(i);
         forme_tmp.setX(x);
         forme_tmp.setY(y); 
      }
