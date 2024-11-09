@@ -4,14 +4,26 @@ import numpy as np
 from ivy.ivy import IvyServer 
 import math
 
+list_forme = []
+
 class IvyAgent(IvyServer):
     def __init__(self,name):
         IvyServer.__init__(self,"PyMove")
         self.start('127.255.255.255:2010')
+        self.bind_msg(self.handle_forme,"^Formes Liste=(.*)")
 
     def send(self,message):
         s = "PyMove msg="+message
         self.send_msg(s)
+
+    def handle_forme(self,agent,arg):
+        global list_forme
+        l = arg.split("#")
+        list_forme = []
+        for i in l:
+            if i != "":
+                f = i.split(",")
+                list_forme.append(f)
 
 def detect_shape(contour):
     if contour == []:
@@ -43,6 +55,17 @@ def detect_shape(contour):
         except:
             return ""
 
+def dessiner_triangle(image, top_right, color, thickness=2):
+    largeur = int(100/1600*image_width)
+    hauteur = int(100/1000*image_height)
+    point1 = top_right
+    point2 = (top_right[0] - largeur // 2, top_right[1] + hauteur)
+    point3 = (top_right[0] + largeur // 2, top_right[1] + hauteur)
+
+    cv2.line(image, point1, point2, color, thickness)
+    cv2.line(image, point2, point3, color, thickness)
+    cv2.line(image, point3, point1, color, thickness)
+
 cam = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
@@ -55,6 +78,7 @@ list_draw = []
 
 agent = IvyAgent("PyMove")
 
+hand_gesture = ""
 old_gesture = ""
 
 while cam.isOpened():
@@ -93,7 +117,7 @@ while cam.isOpened():
             if hand_gesture == "erase":
                 list_draw = []
             if hand_gesture == "up":
-                list_draw.append((index_finger_x*image_width, index_finger_y*image_height))
+                list_draw.append((index_finger_x*image_width,index_finger_y*image_height))
             if hand_gesture == "send":
                 r = detect_shape(list_draw)
                 print(r)
@@ -109,16 +133,35 @@ while cam.isOpened():
                 agent.send("release")
                 print("release")
 
+
             for point in list_draw:
                 cv2.circle(frame, (int(point[0]), int(point[1])), 10, (255, 0, 0), -1)
+                #frame[int(point[1]),int(point[0])] = (255,0,0)
+
 
             old_gesture = hand_gesture
 
-    cv2.imshow("PyGesture",frame)
+    if hand_gesture != "send" and hand_gesture != "erase" and hand_gesture != "up":
+        for forme in list_forme:
+            if forme[0]=="Rectangle":
+                top = (int(int(forme[4])/1600*image_width),int(int(forme[5])/1000*image_height))
+                bottom = (int((int(forme[4])+100)/1600*image_width),int((int(forme[5])+200)/1000*image_height))
+                cv2.rectangle(frame,top,bottom,(int(forme[3]),int(forme[2]),int(forme[1])),5)
+            if forme[0]=="Carre":
+                top = (int(int(forme[4])/1600*image_width),int(int(forme[5])/1000*image_height))
+                bottom = (int((int(forme[4])+100)/1600*image_width),int((int(forme[5])+100)/1000*image_height))
+                cv2.rectangle(frame,top,bottom,(int(forme[3]),int(forme[2]),int(forme[1])),5)
+            elif forme[0]=="Cercle":
+                center = (int(int(forme[4])/1600*image_width),int(int(forme[5])/1000*image_height))
+                cv2.circle(frame, center, int(100/1600*image_width), (int(forme[3]),int(forme[2]),int(forme[1])),5)
+            elif forme[0]=="Triangle":
+                center = (int(int(forme[4])/1600*image_width),int(int(forme[5])/1000*image_height))
+                dessiner_triangle(frame,center,(int(forme[3]),int(forme[2]),int(forme[1])),5)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+
+    cv2.imshow("PyGesture",frame)
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
 cam.release()
 cv2.destroyAllWindows()
-

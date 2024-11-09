@@ -9,6 +9,7 @@ ArrayList<Button> buttonCouleur;
 ArrayList<Forme> formes;
 Button buttonClear;
 
+Thread thread_forme;
 
 void setup(){
   ivyClick = new IvyClick();
@@ -28,7 +29,33 @@ void setup(){
   buttonCouleur.add(new Button(600,0,100,50,1,"Bleu"));
   buttonCouleur.add(new Button(700,0,100,50,1,"Vert"));
    
-  lancement_python(); 
+  //lancement_python(); 
+  
+  try {
+    bus = new Ivy("OneDollarIvy", " OneDollarIvy is ready", null);
+    bus.start("127.255.255.255:2010");
+  }catch (IvyException ie) {}
+  
+  thread_forme = new Thread(new Runnable() {
+        public void run() {
+            while(true){
+              String list_forme_string = "";
+              for(Forme f : formes){
+                if(f.getLabel().equals("Carré"))list_forme_string += "#Carre,"+Integer.toString(f.getR())+","+Integer.toString(f.getG())+","+Integer.toString(f.getB())+","+Integer.toString(f.getX())+","+Integer.toString(f.getY());
+                else list_forme_string += "#"+f.getLabel()+","+Integer.toString(f.getR())+","+Integer.toString(f.getG())+","+Integer.toString(f.getB())+","+Integer.toString(f.getX())+","+Integer.toString(f.getY());
+              }
+              
+              try{
+                bus.sendMsg("Formes Liste="+list_forme_string);
+                Thread.sleep(50);
+              }
+              catch (IvyException ie) {}
+              catch(InterruptedException ie){}
+              
+            }
+        }
+  });
+  thread_forme.start();
   
   size(1600,1000);
 }

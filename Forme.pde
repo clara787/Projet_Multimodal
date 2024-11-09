@@ -69,6 +69,14 @@ public class Forme{
     return b;
   }
   
+  int getX(){
+     return x; 
+  }
+  
+  int getY(){
+     return y; 
+  }
+  
   void setR(int new_r){
     this.r = new_r;
   }
