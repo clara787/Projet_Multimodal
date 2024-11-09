@@ -147,6 +147,7 @@ void delete_shape(int index){
   for(int i = 0; i < formes.size(); i++){
      if(formes.get(i).getIndex() == index){
         formes.remove(i); 
+        multi.reinit_takeforme();
      }
   }
 }

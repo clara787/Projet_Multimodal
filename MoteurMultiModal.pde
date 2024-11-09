@@ -14,7 +14,7 @@ class MoteurMultiModal{
     cursorX = 0;
     cursorY = 0;
     lastColor = new ArrayList<>();
-    lastColor.add(0);
+    lastColor.add(255);
     lastColor.add(0);
     lastColor.add(0);
     
@@ -227,5 +227,9 @@ class MoteurMultiModal{
      println("couleur:"+lastColor.get(0)+","+lastColor.get(1)+","+lastColor.get(2)+",");
      println("lastForme:"+lastForme);
      println("selectedFormeName:"+selectedForme.getIndex());
+  }
+
+  void reinit_takeforme(){
+    takeForme = null;
   }
 }
