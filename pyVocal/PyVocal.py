@@ -1,4 +1,3 @@
-#!/usr/bin/env/python
 import sys
 import speech_recognition as sr
 from ivy.ivy import IvyServer
