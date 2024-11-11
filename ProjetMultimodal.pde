@@ -14,7 +14,7 @@ Thread thread_forme;
 void setup(){
   ivyClick = new IvyClick();
   multi = new MoteurMultiModal();
-  
+
   buttonForme = new ArrayList<>();
   buttonCouleur = new ArrayList<>();
   buttonClear = new Button(1500,0,100,50,0,"Clear");
@@ -29,7 +29,7 @@ void setup(){
   buttonCouleur.add(new Button(600,0,100,50,1,"Bleu"));
   buttonCouleur.add(new Button(700,0,100,50,1,"Vert"));
    
-  lancement_python(); 
+  lancement_python();
   
   try {
     bus = new Ivy("OneDollarIvy", " OneDollarIvy is ready", null);

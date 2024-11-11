@@ -66,6 +66,26 @@ def dessiner_triangle(image, top_right, color, thickness=2):
     cv2.line(image, point2, point3, color, thickness)
     cv2.line(image, point3, point1, color, thickness)
 
+def dessiner_corbeille(image):
+    trash_bin = cv2.imread('./PyMove/supprimer.png')
+    if trash_bin is None:
+        print("L'image de la corbeille n'a pas été trouvée.")
+        return
+
+    image_height, image_width, _ = image.shape
+    
+    # Redimensionne image clear pour coin supérieur droit
+    scale = 0.08  # Facteur d'échelle pour redimensionner l'image
+    trash_bin_resized = cv2.resize(trash_bin, (int(image_width * (scale+0.02)), int(image_height * scale)))
+    
+    # Calculer les coordonnées du coin supérieur gauche pour placer l'image
+    top_left_x = image_width - trash_bin_resized.shape[1]
+    top_left_y = 0
+    
+    # Superpose l'image sur le fenetre cam
+    image[top_left_y:top_left_y + trash_bin_resized.shape[0], top_left_x:top_left_x + trash_bin_resized.shape[1]] = trash_bin_resized
+
+
 cam = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
@@ -158,7 +178,7 @@ while cam.isOpened():
                 center = (int(int(forme[4])/1600*image_width),int(int(forme[5])/1000*image_height))
                 dessiner_triangle(frame,center,(int(forme[3]),int(forme[2]),int(forme[1])),5)
 
-
+    dessiner_corbeille(frame)
     cv2.imshow("PyGesture",frame)
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
